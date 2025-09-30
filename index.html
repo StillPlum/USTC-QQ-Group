@@ -5,14 +5,37 @@
   <title>momo 的公告站</title>
   <style>
     :root{
-      --bg:#f4f6fa; --text:#333; --card:#ffffff; --muted:#666; --brand:#4a90e2; --bg1:#f7faff; --bg2:#f4f6fa;
-      --card-1:#ffffff; /* 默认卡片 */
-      --card-2:#f3f7ff; /* 浅蓝卡片 */
+      --bg1:#fdfdff;
+      --bg2:#f4f6fa;
+      --text:#333;
+      --card:#ffffff;
+      --muted:#666;
+      --brand:#4a90e2;
+      --card-1:#ffffff;
+      --card-2:#f3f7ff;
       --card-2-border:#e1ecff;
-      --announce-bg:#fff7d6; --announce-text:#664d00;
+      --announce-bg:#fff7d6;
+      --announce-text:#664d00;
     }
-    body { font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif; margin:0; background:linear-gradient(180deg,var(--bg1) 0%, var(--bg2) 100%); color:var(--text); transition:background .3s,color .3s }
-    body.dark { --bg:#1e1e1e; --text:#e4e4e4; --card:#2a2a2a; --muted:#aaa; --brand:#3d7dd6; --card-1:#2a2a2a; --card-2:#242933; --card-2-border:#2f3a4a; --announce-bg:#3a3212; --announce-text:#ffe9a3; --bg1:#1f2430; --bg2:#15181f; }header { background:var(--brand); color:#fff; padding:1rem; text-align:center; animation:fadeInDown 1s }
+    body {
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+      margin:0;
+      background:linear-gradient(180deg,var(--bg1) 0%, var(--bg2) 100%);
+      color:var(--text);
+      position:relative;
+      overflow-x:hidden;
+    }/* 背景科技感网格 */
+body::before {
+  content:"";
+  position:fixed;
+  top:0; left:0; right:0; bottom:0;
+  background-image:linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
+  background-size:40px 40px;
+  z-index:-1;
+}
+
+header { background:var(--brand); color:#fff; padding:1rem; text-align:center; animation:fadeInDown 1s }
 header img.avatar { width:80px; height:80px; border-radius:50%; display:block; margin:0 auto 10px }
 header h1 { margin:0; font-size:1.5rem }
 
@@ -36,9 +59,7 @@ main { display:flex; flex-wrap:wrap; justify-content:center; padding:1rem }
 .muted { color:var(--muted) }
 
 footer { text-align:center; font-size:.85rem; color:var(--muted); padding:1rem; background:#f0f0f0 }
-body.dark footer { color:var(--muted); background:#222 }
 
-.dark-toggle { position:fixed; top:10px; right:10px; background:var(--brand); color:#fff; border:none; border-radius:6px; padding:.4rem .8rem; cursor:pointer }
 #visitor-count { font-weight:bold }
 
 /* Animations */
@@ -58,25 +79,24 @@ body.dark footer { color:var(--muted); background:#222 }
     <img class="avatar" src="f0ed53658b736f373e3052c69b01655f.jpg" alt="头像" />
     <h1>momo 的公告站</h1>
     <p class="muted" style="color:#e9f2ff">欢迎加入群聊，一起交流</p>
-  </header>  <!-- 滚动公告（可添加多条，将重复滚动） -->  <div class="announcement">
+  </header>  <!-- 滚动公告 -->  <div class="announcement">
     <div class="marquee" id="marquee">
       <div class="item">📢 最新公告：群满请加备用群，补档信息优先更新在这里。</div>
       <div class="item">📌 温馨提示：二维码可点击放大，手机扫码更方便。</div>
       <div class="item">🕒 更新时间：2025-09-30</div>
-      <!-- 会在脚本里克隆一遍以实现无缝滚动 -->
     </div>
   </div>  <main>
     <div class="card">
-      <h2>A群</h2>
+      <h2>QQ群一</h2>
       <div class="group">
-        <img src="f1800e1d0b82e37b236ea1e53ef6e8b0.jpg" alt="A群二维码" onclick="enlarge(this.src)">
+        <img src="f1800e1d0b82e37b236ea1e53ef6e8b0.jpg" alt="群一二维码" onclick="enlarge(this.src)">
         <p>群号：<span id="qq1">1045782472</span></p>
         <button class="copy-btn" onclick="copyText('qq1')">复制群号</button>
       </div>
     </div><div class="card alt">
-  <h2>B群</h2>
+  <h2>QQ群二</h2>
   <div class="group">
-    <img src="52eb09b545602858447844f0261bb04b.jpg" alt="B群二维码" onclick="enlarge(this.src)">
+    <img src="52eb09b545602858447844f0261bb04b.jpg" alt="群二二维码" onclick="enlarge(this.src)">
     <p>群号：<span id="qq2">1005858062</span></p>
     <button class="copy-btn" onclick="copyText('qq2')">复制群号</button>
   </div>
@@ -87,67 +107,8 @@ body.dark footer { color:var(--muted); background:#222 }
     <p>最后更新：2025-09-30</p>
     <p>访客计数器：<span id="visitor-count">0</span></p>
     <p>© 2025 momo</p>
-  </footer><button class="dark-toggle" onclick="toggleDark()">🌙 夜间模式</button>
-
-  <!-- Modal for enlarged QR -->  <div class="modal" id="qrModal" onclick="this.style.display='none'">
-    <img id="qrImg" src="" alt="放大二维码">
-  </div>  <script>
-    function copyText(id){ const t=document.getElementById(id).innerText; 
-footer { text-align:center; font-size:.85rem; color:var(--muted); padding:1rem; background:#f0f0f0 }
-body.dark footer { color:var(--muted); background:#222 }
-
-.dark-toggle { position:fixed; top:10px; right:10px; background:var(--brand); color:#fff; border:none; border-radius:6px; padding:.4rem .8rem; cursor:pointer }
-#visitor-count { font-weight:bold }
-
-/* Animations */
-@keyframes fadeIn { from{opacity:0} to{opacity:1} }
-@keyframes fadeInUp { from{opacity:0; transform:translateY(20px)} to{opacity:1; transform:translateY(0)} }
-@keyframes fadeInDown { from{opacity:0; transform:translateY(-20px)} to{opacity:1; transform:translateY(0)} }
-@keyframes scrollX { from{ transform:translateX(0) } to{ transform:translateX(-50%) } }
-
-/* Modal for enlarged QR */
-.modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.8); justify-content:center; align-items:center }
-.modal img { max-width:90%; max-height:90%; border-radius:12px }
-
-  </style>
-</head>
-<body>
-  <header>
-    <img class="avatar" src="f0ed53658b736f373e3052c69b01655f.jpg" alt="头像" />
-    <h1>momo 的公告站</h1>
-    <p class="muted" style="color:#e9f2ff">欢迎加入群聊，一起交流</p>
-  </header>  <!-- 滚动公告（可添加多条，将重复滚动） -->  <div class="announcement">
-    <div class="marquee" id="marquee">
-      <div class="item">📢 最新公告：A群为备用群，补档信息优先更新在这里。</div>
-      <div class="item">🕒 更新时间：2025-09-30</div>
-      <!-- 会在脚本里克隆一遍以实现无缝滚动 -->
-    </div>
-  </div>  <main>
-    <div class="card">
-      <h2>A群</h2>
-      <div class="group">
-        <img src="f1800e1d0b82e37b236ea1e53ef6e8b0.jpg" alt="A群二维码" onclick="enlarge(this.src)">
-        <p>群号：<span id="qq1">1045782472</span></p>
-        <button class="copy-btn" onclick="copyText('qq1')">复制群号</button>
-      </div>
-    </div><div class="card alt">
-  <h2>B群</h2>
-  <div class="group">
-    <img src="52eb09b545602858447844f0261bb04b.jpg" alt="B群二维码" onclick="enlarge(this.src)">
-    <p>群号：<span id="qq2">1005858062</span></p>
-    <button class="copy-btn" onclick="copyText('qq2')">复制群号</button>
-  </div>
-</div>
-
-  </main>  <footer>
-    <p>📧 联系方式：<a href="mailto:stillplum@qq.com">stillplum@qq.com</a></p>
-    <p>最后更新：2025-09-30</p>
-    <p>访客计数器：<span id="visitor-count">0</span></p>
-    <p>© 2025 momo</p>
-  </footer><button class="dark-toggle" onclick="toggleDark()">🌙 夜间模式</button>
-
-  <!-- Modal for enlarged QR -->  <div class="modal" id="qrModal" onclick="this.style.display='none'">
+  </footer>  <!-- Modal for enlarged QR -->  <div class="modal" id="qrModal" onclick="this.style.display='none'">
     <img id="qrImg" src="" alt="放大二维码">
   </div>  <script>
     function copyText(id){ const t=document.getElementById(id).innerText; navigator.clipboard.writeText(t).then(()=>alert('已复制群号：'+t)).catch(()=>prompt('复制失败，请手动复制：', t)); }
-    f
+    function enlarge(src){ document.getElementById('qrImg').src=src; document.getElementById('qrModal').style.display='fle
