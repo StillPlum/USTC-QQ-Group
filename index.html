@@ -10,12 +10,18 @@
       padding: 0;
       background: #f4f6fa;
       color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+    body.dark {
+      background: #1e1e1e;
+      color: #e4e4e4;
     }
     header {
       background: #4a90e2;
       color: white;
       padding: 1rem;
       text-align: center;
+      animation: fadeInDown 1s;
     }
     header img.avatar {
       width: 80px;
@@ -37,6 +43,7 @@
       font-size: 0.95rem;
       text-align: center;
       box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+      animation: fadeIn 1.2s;
     }
     main {
       display: flex;
@@ -52,6 +59,10 @@
       padding: 1rem;
       max-width: 350px;
       flex: 1;
+      animation: fadeInUp 1s;
+    }
+    body.dark .card {
+      background: #2a2a2a;
     }
     .card h2 {
       font-size: 1.2rem;
@@ -64,6 +75,11 @@
     .group img {
       width: 100%;
       border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .group img:hover {
+      transform: scale(1.02);
     }
     .group p {
       margin: 0.5rem 0 0;
@@ -85,6 +101,39 @@
       color: #666;
       padding: 1rem;
     }
+    .dark footer { color: #aaa; }
+    .dark-toggle {
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      background: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.4rem 0.8rem;
+      cursor: pointer;
+    }
+    #visitor-count { font-weight: bold; }/* Animations */
+@keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
+@keyframes fadeInUp { from {opacity:0; transform: translateY(20px);} to {opacity:1; transform: translateY(0);} }
+@keyframes fadeInDown { from {opacity:0; transform: translateY(-20px);} to {opacity:1; transform: translateY(0);} }
+
+/* Modal for enlarged QR */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+}
+.modal img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+}
+
   </style>
 </head>
 <body>
@@ -98,23 +147,33 @@
     <div class="card">
       <h2>QQ群一</h2>
       <div class="group">
-        <img src="f1800e1d0b82e37b236ea1e53ef6e8b0.jpg" alt="群一二维码">
+        <img src="f1800e1d0b82e37b236ea1e53ef6e8b0.jpg" alt="群一二维码" onclick="enlarge(this.src)">
         <p>群号：<span id="qq1">1045782472</span></p>
         <button class="copy-btn" onclick="copyText('qq1')">复制群号</button>
       </div>
     </div><div class="card">
   <h2>QQ群二</h2>
   <div class="group">
-    <img src="52eb09b545602858447844f0261bb04b.jpg" alt="群二二维码">
+    <img src="52eb09b545602858447844f0261bb04b.jpg" alt="群二二维码" onclick="enlarge(this.src)">
     <p>群号：<span id="qq2">1005858062</span></p>
     <button class="copy-btn" onclick="copyText('qq2')">复制群号</button>
   </div>
 </div>
 
+<div class="card">
+  <h2>更多联系方式</h2>
+  <p>📧 邮箱：<a href="mailto:stillplum@qq.com">stillplum@qq.com</a></p>
+</div>
+
   </main>  <footer>
     <p>最后更新：2025-09-30</p>
+    <p>访客计数器：<span id="visitor-count">0</span></p>
     <p>© 2025 momo</p>
-  </footer>  <script>
+  </footer><button class="dark-toggle" onclick="toggleDark()">🌙 夜间模式</button>
+
+  <!-- Modal for enlarged QR -->  <div class="modal" id="qrModal" onclick="this.style.display='none'">
+    <img id="qrImg" src="" alt="放大二维码">
+  </div>  <script>
     function copyText(id) {
       const text = document.getElementById(id).innerText;
       navigator.clipboard.writeText(text).then(() => {
@@ -123,5 +182,20 @@
         prompt('复制失败，请手动复制：', text);
       });
     }
+
+    function toggleDark(){
+      document.body.classList.toggle('dark');
+    }
+
+    function enlarge(src){
+      document.getElementById('qrImg').src = src;
+      document.getElementById('qrModal').style.display = 'flex';
+    }
+
+    // 访客计数器（使用 localStorage 模拟）
+    let count = localStorage.getItem('visitorCount') || 0;
+    count++;
+    localStorage.setItem('visitorCount', count);
+    document.getElementById('visitor-count').innerText = count;
   </script></body>
 </html>
