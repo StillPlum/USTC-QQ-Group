@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
+<!DOCTYPE html><html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,6 +27,16 @@
     header h1 {
       margin: 0;
       font-size: 1.5rem;
+    }
+    .announcement {
+      background: #fff7d6;
+      color: #664d00;
+      padding: 0.8rem;
+      margin: 1rem;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     }
     main {
       display: flex;
@@ -60,6 +69,16 @@
       margin: 0.5rem 0 0;
       font-size: 0.9rem;
     }
+    .copy-btn {
+      margin-top: 0.5rem;
+      padding: 0.4rem 0.8rem;
+      border: none;
+      border-radius: 6px;
+      background: #4a90e2;
+      color: white;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
     footer {
       text-align: center;
       font-size: 0.8rem;
@@ -73,28 +92,36 @@
     <img class="avatar" src="f0ed53658b736f373e3052c69b01655f.jpg" alt="头像" />
     <h1>momo 的公告站</h1>
     <p>欢迎加入群聊，一起交流</p>
-  </header>
-
-  <main>
+  </header>  <div class="announcement">
+    📢 最新公告：群满请加备用群，补档信息会优先更新在这里。
+  </div>  <main>
     <div class="card">
       <h2>QQ群一</h2>
       <div class="group">
         <img src="f1800e1d0b82e37b236ea1e53ef6e8b0.jpg" alt="群一二维码">
-        <p>群号：1045782472</p>
+        <p>群号：<span id="qq1">1045782472</span></p>
+        <button class="copy-btn" onclick="copyText('qq1')">复制群号</button>
       </div>
-    </div>
+    </div><div class="card">
+  <h2>QQ群二</h2>
+  <div class="group">
+    <img src="52eb09b545602858447844f0261bb04b.jpg" alt="群二二维码">
+    <p>群号：<span id="qq2">1005858062</span></p>
+    <button class="copy-btn" onclick="copyText('qq2')">复制群号</button>
+  </div>
+</div>
 
-    <div class="card">
-      <h2>QQ群二</h2>
-      <div class="group">
-        <img src="52eb09b545602858447844f0261bb04b.jpg" alt="群二二维码">
-        <p>群号：1005858062</p>
-      </div>
-    </div>
-  </main>
-
-  <footer>
+  </main>  <footer>
+    <p>最后更新：2025-09-30</p>
     <p>© 2025 momo</p>
-  </footer>
-</body>
+  </footer>  <script>
+    function copyText(id) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('已复制群号：' + text);
+      }).catch(() => {
+        prompt('复制失败，请手动复制：', text);
+      });
+    }
+  </script></body>
 </html>
