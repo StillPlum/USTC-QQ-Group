@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="zh-CN">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,67 +10,75 @@
       --card-1:#ffffff; --card-2:#f3f7ff; --card-2-border:#e1ecff;
       --announce-bg:#fff7d6; --announce-text:#664d00;
     }
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;margin:0;color:var(--text);background:linear-gradient(180deg,var(--bg1),var(--bg2));overflow-x:hidden}/* ===== 科技感动态网格（HUD） ===== */
-.grid-bg, .grid-bg::before, .grid-bg::after{position:fixed;inset:0;pointer-events:none}
-.grid-bg::before, .grid-bg::after{content:"";z-index:-2;background-size:40px 40px,40px 40px;background-image:linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px),linear-gradient(90deg, rgba(0,0,0,.06) 1px,transparent 1px);animation:gridMove 20s linear infinite}
-.grid-bg::after{z-index:-1;opacity:.25;filter:blur(1px);animation-direction:reverse}
-@keyframes gridMove{from{background-position:0 0,0 0}to{background-position:40px 40px,40px 40px}}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;margin:0;color:var(--text);background:linear-gradient(180deg,var(--bg1),var(--bg2));overflow-x:hidden}
 
-/* 背景粒子 Canvas 层 */
-#bgParticles{position:fixed;inset:0;z-index:-3;pointer-events:none}
+    /* ===== 科技感动态网格（HUD） ===== */
+    .grid-bg, .grid-bg::before, .grid-bg::after{position:fixed;inset:0;pointer-events:none}
+    .grid-bg::before, .grid-bg::after{content:"";z-index:-2;background-size:40px 40px,40px 40px;background-image:linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px),linear-gradient(90deg, rgba(0,0,0,.06) 1px,transparent 1px);animation:gridMove 20s linear infinite}
+    .grid-bg::after{z-index:-1;opacity:.25;filter:blur(1px);animation-direction:reverse}
+    @keyframes gridMove{from{background-position:0 0,0 0}to{background-position:40px 40px,40px 40px}}
 
-header{background:var(--brand);color:#fff;text-align:center;padding:1.25rem 1rem;animation:fadeInDown 1s}
-header img.avatar{width:86px;height:86px;border-radius:50%;display:block;margin:0 auto 12px}
-header h1{margin:0;font-size:1.8rem}
+    /* 背景粒子 Canvas 层 */
+    #bgParticles{position:fixed;inset:0;z-index:-3;pointer-events:none}
 
-/* 滚动公告条 */
-.announcement{position:relative;margin:1rem;background:var(--announce-bg);color:var(--announce-text);border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden}
-.announcement .marquee{display:flex;gap:2rem;white-space:nowrap;padding:.8rem 0;animation:scrollX 18s linear infinite}
-.announcement:hover .marquee{animation-play-state:paused}
-.announcement .item{font-size:.95rem}
+    header{background:var(--brand);color:#fff;text-align:center;padding:1.25rem 1rem;animation:fadeInDown 1s}
+    header img.avatar{width:86px;height:86px;border-radius:50%;display:block;margin:0 auto 12px}
+    header h1{margin:0;font-size:1.8rem}
 
-main{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;padding:1rem}
-.card{background:var(--card-1);border:1px solid rgba(0,0,0,.06);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.08);padding:1rem;max-width:360px;flex:1;transition:transform .3s ease, box-shadow .3s ease;animation:fadeInUp 1s}
-.card.alt{background:var(--card-2);border-color:var(--card-2-border)}
-.card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(49,132,255,.18)}
-.card h2{font-size:1.2rem;margin:0 0 .5rem 0}
+    /* 滚动公告条 */
+    .announcement{position:relative;margin:1rem;background:var(--announce-bg);color:var(--announce-text);border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden}
+    .announcement .marquee{display:flex;gap:2rem;white-space:nowrap;padding:.8rem 0;animation:scrollX 18s linear infinite}
+    .announcement:hover .marquee{animation-play-state:paused}
+    .announcement .item{font-size:.95rem}
 
-.group{text-align:center;margin:1rem 0}
-.group img{width:100%;border-radius:12px;cursor:pointer;transition:transform .2s, box-shadow .2s}
-.group img:hover{transform:scale(1.02);box-shadow:0 12px 24px rgba(0,0,0,.12)}
-.group p{margin:.6rem 0 0;font-size:.95rem}
+    main{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;padding:1rem}
+    .card{background:var(--card-1);border:1px solid rgba(0,0,0,.06);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.08);padding:1rem;max-width:360px;flex:1;transition:transform .3s ease, box-shadow .3s ease;animation:fadeInUp 1s}
+    .card.alt{background:var(--card-2);border-color:var(--card-2-border)}
+    .card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(49,132,255,.18)}
+    .card h2{font-size:1.2rem;margin:0 0 .5rem 0}
 
-.copy-btn{margin-top:.6rem;padding:.5rem .9rem;border:none;border-radius:8px;background:var(--brand);color:#fff;cursor:pointer;font-size:.9rem}
-.muted{color:var(--muted)}
+    .group{text-align:center;margin:1rem 0}
+    .group img{width:100%;border-radius:12px;cursor:pointer;transition:transform .2s, box-shadow .2s}
+    .group img:hover{transform:scale(1.02);box-shadow:0 12px 24px rgba(0,0,0,.12)}
+    .group p{margin:.6rem 0 0;font-size:.95rem}
 
-footer{text-align:center;font-size:.9rem;color:var(--muted);padding:1rem;background:#eef2f7}
-#visitor-count{font-weight:600}
+    .copy-btn{margin-top:.6rem;padding:.5rem .9rem;border:none;border-radius:8px;background:var(--brand);color:#fff;cursor:pointer;font-size:.9rem}
+    .muted{color:var(--muted)}
 
-/* Animations */
-@keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-@keyframes scrollX{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    footer{text-align:center;font-size:.9rem;color:var(--muted);padding:1rem;background:#eef2f7}
+    #visitor-count{font-weight:600}
 
-/* 返回顶部按钮 */
-#toTop{position:fixed;right:14px;bottom:16px;opacity:0;transform:translateY(12px);transition:all .25s;pointer-events:none;border:0;border-radius:999px;background:#111;color:#fff;padding:.6rem .8rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
-#toTop.show{opacity:1;transform:none;pointer-events:auto}
+    /* Animations */
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes scrollX{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
+    /* 返回顶部按钮 */
+    #toTop{position:fixed;right:14px;bottom:16px;opacity:0;transform:translateY(12px);transition:all .25s;pointer-events:none;border:0;border-radius:999px;background:#111;color:#fff;padding:.6rem .8rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+    #toTop.show{opacity:1;transform:none;pointer-events:auto}
   </style>
 </head>
 <body>
   <!-- 背景层：粒子 Canvas + 动态网格 -->
   <canvas id="bgParticles"></canvas>
-  <div class="grid-bg"></div>  <header>
+  <div class="grid-bg"></div>
+
+  <header>
     <img class="avatar" src="f0ed53658b736f373e3052c69b01655f.jpg" alt="头像" />
     <h1>momo 的公告站</h1>
     <p class="muted" style="color:#e9f2ff">欢迎加入群聊，一起交流</p>
-  </header>  <!-- 滚动公告 -->  <div class="announcement">
+  </header>
+
+  <!-- 滚动公告 -->
+  <div class="announcement">
     <div class="marquee" id="marquee">
       <div class="item">📢 最新公告：群满请加备用群，补档信息优先更新在这里。</div>
       <div class="item">📌 温馨提示：二维码可点击放大，手机扫码更方便。</div>
       <div class="item">🕒 更新时间：2025-09-30</div>
     </div>
-  </div>  <main>
+  </div>
+
+  <main>
     <div class="card" data-float="1">
       <h2>QQ群一</h2>
       <div class="group">
@@ -77,16 +86,78 @@ footer{text-align:center;font-size:.9rem;color:var(--muted);padding:1rem;backgro
         <p>群号：<span id="qq1">1045782472</span></p>
         <button class="copy-btn" onclick="copyText('qq1')">复制群号</button>
       </div>
-    </div><div class="card alt" data-float="2">
-  <h2>QQ群二</h2>
-  <div class="group">
-    <img src="52eb09b545602858447844f0261bb04b.jpg" alt="群二二维码" onclick="enlarge(this.src)">
-    <p>群号：<span id="qq2">1005858062</span></p>
-    <button class="copy-btn" onclick="copyText('qq2')">复制群号</button>
-  </div>
-</div>
+    </div>
 
-  </main>  <footer>
+    <div class="card alt" data-float="2">
+      <h2>QQ群二</h2>
+      <div class="group">
+        <img src="52eb09b545602858447844f0261bb04b.jpg" alt="群二二维码" onclick="enlarge(this.src)">
+        <p>群号：<span id="qq2">1005858062</span></p>
+        <button class="copy-btn" onclick="copyText('qq2')">复制群号</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
     <p>📧 联系方式：<a href="mailto:stillplum@qq.com">stillplum@qq.com</a></p>
     <p>最后更新：2025-09-30</p>
-    <p>访客：PV <span id="busuanzi_value_site_pv">--</span> ｜ UV <span id="busua
+    <p>访客：PV <span id="busuanzi_value_site_pv">--</span> ｜ UV <span id="busuanzi_value_site_uv">--</span>（若加载失败将回退为本地计数：<span id="visitor-count">0</span>）</p>
+    <p>© 2025 momo</p>
+  </footer>
+
+  <button id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆️</button>
+
+  <!-- Modal for enlarged QR -->
+  <div class="modal" id="qrModal" onclick="this.style.display='none'">
+    <img id="qrImg" src="" alt="放大二维码">
+  </div>
+
+  <!-- 实时访问统计（Busuanzi） -->
+  <script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script>
+
+  <script>
+    function copyText(id){const t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(()=>alert('已复制群号：'+t)).catch(()=>prompt('复制失败，请手动复制：', t));}
+    function enlarge(src){document.getElementById('qrImg').src=src;document.getElementById('qrModal').style.display='flex';}
+
+    // 公告无缝滚动
+    (function(){const mq=document.getElementById('marquee');mq.innerHTML=mq.innerHTML+mq.innerHTML;})();
+
+    // 返回顶部显示逻辑
+    const toTop=document.getElementById('toTop');
+    window.addEventListener('scroll',()=>{toTop.classList.toggle('show',window.scrollY>300);});
+
+    // 卡片浮动（滚动视差）
+    const floats=document.querySelectorAll('[data-float]');
+    window.addEventListener('scroll',()=>{
+      const y=window.scrollY;
+      floats.forEach((el,i)=>{ const depth=(i%2?1.2:1)*0.04; el.style.transform=`translateY(${Math.sin((y/100)+(i*0.8))*6}px)`; });
+    });
+
+    // 粒子背景（轻量）
+    const c=document.getElementById('bgParticles');
+    const ctx=c.getContext('2d');
+    function resize(){c.width=window.innerWidth; c.height=window.innerHeight}
+    window.addEventListener('resize',resize); resize();
+    const N=60, parts=[];
+    for(let i=0;i<N;i++){parts.push({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-0.5)*0.2,vy:(Math.random()-0.5)*0.2,r:Math.random()*1.4+0.6});}
+    function step(){ctx.clearRect(0,0,c.width,c.height); ctx.fillStyle='rgba(30,90,200,0.35)'; ctx.strokeStyle='rgba(30,90,200,0.15)';
+      for(const p of parts){p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>c.width) p.vx*=-1; if(p.y<0||p.y>c.height) p.vy*=-1; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();}
+      // 连接近邻
+      for(let i=0;i<N;i++) for(let j=i+1;j<N;j++){const a=parts[i],b=parts[j]; const dx=a.x-b.x, dy=a.y-b.y; const d=Math.hypot(dx,dy); if(d<100){ ctx.globalAlpha=(100-d)/300; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); ctx.globalAlpha=1; }}
+      requestAnimationFrame(step);
+    }
+    step();
+
+    // 统计回退：如果 3 秒后 Busuanzi 仍未填充，则用本地计数
+    setTimeout(()=>{
+      const pv=document.getElementById('busuanzi_value_site_pv');
+      if(pv && (pv.innerText==='--' || pv.innerText==='')){
+        let count=Number(localStorage.getItem('visitorCount')||0)+1; localStorage.setItem('visitorCount',count);
+        document.getElementById('visitor-count').innerText=count;
+      } else {
+        document.getElementById('visitor-count').parentElement.style.display='none';
+      }
+    },3000);
+  </script>
+</body>
+</html>
