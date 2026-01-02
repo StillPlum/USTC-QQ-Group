@@ -2,162 +2,326 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>momo 的公告站</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>momo 的基地</title>
   <style>
-    :root{
-      --bg1:#fdfdff; --bg2:#f4f6fa; --text:#1b1f23; --muted:#6b7280; --brand:#4a90e2;
-      --card-1:#ffffff; --card-2:#f3f7ff; --card-2-border:#e1ecff;
-      --announce-bg:#fff7d6; --announce-text:#664d00;
+    :root {
+      /* 核心配色：提取自你的头像和二维码 */
+      --primary: #4a90e2;
+      --primary-light: #eef6ff;
+      --accent: #f5c65d; 
+      --text-main: #2c3e50;
+      --text-sub: #606f7b;
+      
+      /* 毛玻璃卡片背景 */
+      --glass-bg: rgba(255, 255, 255, 0.75);
+      --glass-border: rgba(255, 255, 255, 0.8);
+      --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
+      
+      /* 页面背景渐变 */
+      --bg-gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
     }
-    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;margin:0;color:var(--text);background:linear-gradient(180deg,var(--bg1),var(--bg2));overflow-x:hidden}
 
-    /* ===== 科技感动态网格（HUD） ===== */
-    .grid-bg, .grid-bg::before, .grid-bg::after{position:fixed;inset:0;pointer-events:none}
-    .grid-bg::before, .grid-bg::after{content:"";z-index:-2;background-size:40px 40px,40px 40px;background-image:linear-gradient(rgba(0,0,0,.06) 1px,transparent 1px),linear-gradient(90deg, rgba(0,0,0,.06) 1px,transparent 1px);animation:gridMove 20s linear infinite}
-    .grid-bg::after{z-index:-1;opacity:.25;filter:blur(1px);animation-direction:reverse}
-    @keyframes gridMove{from{background-position:0 0,0 0}to{background-position:40px 40px,40px 40px}}
+    /* 深色模式适配 */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-main: #f1f1f1;
+        --text-sub: #a0a0a0;
+        --glass-bg: rgba(30, 30, 30, 0.65);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --bg-gradient: linear-gradient(135deg, #1a1c20 0%, #0f1012 100%);
+        --primary-light: #2c3e50;
+      }
+    }
 
-    /* 背景粒子 Canvas 层 */
-    #bgParticles{position:fixed;inset:0;z-index:-3;pointer-events:none}
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
 
-    header{background:var(--brand);color:#fff;text-align:center;padding:1.25rem 1rem;animation:fadeInDown 1s}
-    header img.avatar{width:86px;height:86px;border-radius:50%;display:block;margin:0 auto 12px}
-    header h1{margin:0;font-size:1.8rem}
+    /* 背景装饰球（营造氛围） */
+    .bg-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: -1;
+      opacity: 0.6;
+      animation: float 10s infinite ease-in-out;
+    }
+    .blob-1 { width: 300px; height: 300px; background: #a1c4fd; top: -50px; left: -50px; }
+    .blob-2 { width: 250px; height: 250px; background: #fbc2eb; bottom: -50px; right: -50px; animation-delay: -5s; }
 
-    /* 滚动公告条 */
-    .announcement{position:relative;margin:1rem;background:var(--announce-bg);color:var(--announce-text);border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.08);overflow:hidden}
-    .announcement .marquee{display:flex;gap:2rem;white-space:nowrap;padding:.8rem 0;animation:scrollX 18s linear infinite}
-    .announcement:hover .marquee{animation-play-state:paused}
-    .announcement .item{font-size:.95rem}
+    /* 主容器：限制宽度，手机端体验更好 */
+    .container {
+      width: 100%;
+      max-width: 420px;
+      z-index: 1;
+    }
 
-    main{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem;padding:1rem}
-    .card{background:var(--card-1);border:1px solid rgba(0,0,0,.06);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.08);padding:1rem;max-width:360px;flex:1;transition:transform .3s ease, box-shadow .3s ease;animation:fadeInUp 1s}
-    .card.alt{background:var(--card-2);border-color:var(--card-2-border)}
-    .card:hover{transform:translateY(-4px);box-shadow:0 18px 40px rgba(49,132,255,.18)}
-    .card h2{font-size:1.2rem;margin:0 0 .5rem 0}
+    /* 头部区域 */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      animation: fadeInDown 0.8s ease;
+    }
+    .avatar-wrapper {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 16px;
+      border-radius: 50%;
+      padding: 4px;
+      background: rgba(255,255,255,0.5);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    .avatar {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+    }
+    h1 { margin: 0; font-size: 1.5rem; letter-spacing: 0.5px; }
+    .bio { margin: 8px 0 0; color: var(--text-sub); font-size: 0.95rem; }
 
-    .group{text-align:center;margin:1rem 0}
-    .group img{width:100%;border-radius:12px;cursor:pointer;transition:transform .2s, box-shadow .2s}
-    .group img:hover{transform:scale(1.02);box-shadow:0 12px 24px rgba(0,0,0,.12)}
-    .group p{margin:.6rem 0 0;font-size:.95rem}
+    /* 通知胶囊 */
+    .notice-box {
+      background: var(--glass-bg);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      box-shadow: var(--glass-shadow);
+    }
+    .notice-icon { font-size: 1.2rem; }
 
-    .copy-btn{margin-top:.6rem;padding:.5rem .9rem;border:none;border-radius:8px;background:var(--brand);color:#fff;cursor:pointer;font-size:.9rem}
-    .muted{color:var(--muted)}
+    /* 卡片通用样式 */
+    .card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: var(--glass-shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: fadeInUp 0.8s ease;
+      animation-fill-mode: both;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+    /* 让卡片依次出现 */
+    .card:nth-child(2) { animation-delay: 0.1s; }
+    .card:nth-child(3) { animation-delay: 0.2s; }
 
-    footer{text-align:center;font-size:.9rem;color:var(--muted);padding:1rem;background:#eef2f7}
-    #visitor-count{font-weight:600}
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+    .card-title { font-weight: 700; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
+    .tag { font-size: 0.75rem; padding: 2px 8px; border-radius: 6px; font-weight: normal; }
+    .tag.primary { background: var(--primary-light); color: var(--primary); }
+    .tag.warn { background: #fff5e6; color: #ff9800; }
 
-    /* Animations */
-    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes fadeInDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes scrollX{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    .qr-container {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: zoom-in;
+    }
+    .qr-img { width: 100%; display: block; border-radius: 12px; }
+    
+    /* 复制区域 */
+    .copy-area {
+      margin-top: 15px;
+      display: flex;
+      background: rgba(0,0,0,0.03);
+      padding: 4px;
+      padding-left: 16px;
+      border-radius: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .qq-num { font-family: monospace; font-size: 1.1rem; color: var(--text-main); letter-spacing: 1px; }
+    .copy-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .copy-btn:active { transform: scale(0.96); }
 
-    /* 返回顶部按钮 */
-    #toTop{position:fixed;right:14px;bottom:16px;opacity:0;transform:translateY(12px);transition:all .25s;pointer-events:none;border:0;border-radius:999px;background:#111;color:#fff;padding:.6rem .8rem;box-shadow:0 8px 24px rgba(0,0,0,.25)}
-    #toTop.show{opacity:1;transform:none;pointer-events:auto}
+    /* 底部 */
+    footer {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-sub);
+      margin-top: auto;
+      padding-top: 20px;
+      opacity: 0.7;
+    }
+    footer a { color: var(--text-sub); text-decoration: none; border-bottom: 1px dashed currentColor; }
+
+    /* Toast 提示框 */
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 10px 24px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+    /* 放大查看模态框 */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(5px);
+      z-index: 999;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      cursor: zoom-out;
+    }
+    .modal img { max-width: 100%; max-height: 90vh; border-radius: 8px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+
+    /* 动画定义 */
+    @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(20px, 30px); } }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
-  <!-- 背景层：粒子 Canvas + 动态网格 -->
-  <canvas id="bgParticles"></canvas>
-  <div class="grid-bg"></div>
 
-  <header>
-    <img class="avatar" src="f0ed53658b736f373e3052c69b01655f.jpg" alt="头像" />
-    <h1>momo 的公告站</h1>
-    <p class="muted" style="color:#e9f2ff">欢迎加入群聊，一起交流</p>
-  </header>
+  <div class="bg-blob blob-1"></div>
+  <div class="bg-blob blob-2"></div>
 
-  <!-- 滚动公告 -->
-  <div class="announcement">
-    <div class="marquee" id="marquee">
-      <div class="item">📢 最新公告：主群异常或满员时，请加备用群（QQ群二）。</div>
-      <div class="item">📌 温馨提示：二维码可点击放大，手机扫码更方便。</div>
-      <div class="item">🕒 更新时间：2025-09-30</div>
+  <div class="container">
+    <header>
+      <div class="avatar-wrapper">
+        <img class="avatar" src="f0ed53658b736f373e3052c69b01655f.jpg" alt="momo头像" />
+      </div>
+      <h1>momo 的公告站</h1>
+      <p class="bio">✨ 欢迎加入，分享史料与生活 ✨</p>
+    </header>
+
+    <div class="notice-box">
+      <span class="notice-icon">📢</span>
+      <div>最新公告：主群满员请加备用群，二维码可点击放大。</div>
     </div>
+
+    <main>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span style="color:#FF5722">🔥</span> 官方主群
+            <span class="tag primary">活跃</span>
+          </div>
+        </div>
+        <div class="qr-container" onclick="enlarge('f1800e1d0b82e37b236ea1e53ef6e8b0.jpg')">
+          <img src="f1800e1d0b82e37b236ea1e53ef6e8b0.jpg" class="qr-img" alt="主群二维码">
+        </div>
+        <div class="copy-area">
+          <span id="qq1" class="qq-num">1045782472</span>
+          <button class="copy-btn" onclick="copyText('qq1')">复制</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>🛡️</span> 备用分群
+            <span class="tag warn">防失联</span>
+          </div>
+        </div>
+        <div class="qr-container" onclick="enlarge('71fa71204f04d2d0faa3e21920074e18.jpg')">
+          <img src="71fa71204f04d2d0faa3e21920074e18.jpg" class="qr-img" alt="备用群二维码">
+        </div>
+        <div class="copy-area">
+          <span id="qq2" class="qq-num">897570895</span>
+          <button class="copy-btn" onclick="copyText('qq2')">复制</button>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <p>最后更新：2025-10-27 | 访客数：<span id="busuanzi_value_site_pv">--</span></p>
+      <p>联系我：<a href="mailto:stillplum@qq.com">stillplum@qq.com</a></p>
+    </footer>
   </div>
 
-  <main>
-    <div class="card" data-float="1">
-      <h2>QQ群一</h2>
-      <div class="group">
-        <img src="f1800e1d0b82e37b236ea1e53ef6e8b0.jpg" alt="群一二维码" onclick="enlarge(this.src)">
-        <p>群号：<span id="qq1">1045782472</span></p>
-        <button class="copy-btn" onclick="copyText('qq1')">复制群号</button>
-      </div>
-    </div>
+  <div id="toast">✅ 已复制到剪贴板</div>
 
-    <div class="card alt" data-float="2">
-      <h2>QQ群二（备用）</h2>
-      <div class="group">
-        <img src="71fa71204f04d2d0faa3e21920074e18.jpg" alt="群二（备用）二维码" onclick="enlarge(this.src)">
-        <p>群号：<span id="qq2">897570895</span></p>
-        <button class="copy-btn" onclick="copyText('qq2')">复制群号</button>
-      </div>
-    </div>
-  </main>
-
-  <footer>
-    <p>📧 联系方式：<a href="mailto:stillplum@qq.com">stillplum@qq.com</a></p>
-    <p>最后更新：2025-10-27</p>
-    <p>访客：PV <span id="busuanzi_value_site_pv">--</span> ｜ UV <span id="busuanzi_value_site_uv">--</span>（若加载失败将回退为本地计数：<span id="visitor-count">0</span>）</p>
-    <p>© 2025 momo</p>
-  </footer>
-
-  <button id="toTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">⬆️</button>
-
-  <!-- Modal for enlarged QR -->
   <div class="modal" id="qrModal" onclick="this.style.display='none'">
-    <img id="qrImg" src="" alt="放大二维码">
+    <img id="qrImg" src="" alt="放大图片">
   </div>
 
-  <!-- 实时访问统计（Busuanzi） -->
-  <script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" defer></script>
-
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
   <script>
-    function copyText(id){const t=document.getElementById(id).innerText;navigator.clipboard.writeText(t).then(()=>alert('已复制群号：'+t)).catch(()=>prompt('复制失败，请手动复制：', t));}
-    function enlarge(src){document.getElementById('qrImg').src=src;document.getElementById('qrModal').style.display='flex';}
-
-    // 公告无缝滚动
-    (function(){const mq=document.getElementById('marquee');mq.innerHTML=mq.innerHTML+mq.innerHTML;})();
-
-    // 返回顶部显示逻辑
-    const toTop=document.getElementById('toTop');
-    window.addEventListener('scroll',()=>{toTop.classList.toggle('show',window.scrollY>300);});
-
-    // 卡片浮动（滚动视差）
-    const floats=document.querySelectorAll('[data-float]');
-    window.addEventListener('scroll',()=>{
-      const y=window.scrollY;
-      floats.forEach((el,i)=>{ const depth=(i%2?1.2:1)*0.04; el.style.transform=`translateY(${Math.sin((y/100)+(i*0.8))*6}px)`; });
-    });
-
-    // 粒子背景（轻量）
-    const c=document.getElementById('bgParticles');
-    const ctx=c.getContext('2d');
-    function resize(){c.width=window.innerWidth; c.height=window.innerHeight}
-    window.addEventListener('resize',resize); resize();
-    const N=60, parts=[];
-    for(let i=0;i<N;i++){parts.push({x:Math.random()*c.width,y:Math.random()*c.height,vx:(Math.random()-0.5)*0.2,vy:(Math.random()-0.5)*0.2,r:Math.random()*1.4+0.6});}
-    function step(){ctx.clearRect(0,0,c.width,c.height); ctx.fillStyle='rgba(30,90,200,0.35)'; ctx.strokeStyle='rgba(30,90,200,0.15)';
-      for(const p of parts){p.x+=p.vx; p.y+=p.vy; if(p.x<0||p.x>c.width) p.vx*=-1; if(p.y<0||p.y>c.height) p.vy*=-1; ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();}
-      // 连接近邻
-      for(let i=0;i<N;i++) for(let j=i+1;j<N;j++){const a=parts[i],b=parts[j]; const dx=a.x-b.x, dy=a.y-b.y; const d=Math.hypot(dx,dy); if(d<100){ ctx.globalAlpha=(100-d)/300; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); ctx.globalAlpha=1; }}
-      requestAnimationFrame(step);
-    }
-    step();
-
-    // 统计回退：如果 3 秒后 Busuanzi 仍未填充，则用本地计数
-    setTimeout(()=>{
-      const pv=document.getElementById('busuanzi_value_site_pv');
-      if(pv && (pv.innerText==='--' || pv.innerText==='')){
-        let count=Number(localStorage.getItem('visitorCount')||0)+1; localStorage.setItem('visitorCount',count);
-        document.getElementById('visitor-count').innerText=count;
+    // 复制功能优化
+    function copyText(id) {
+      const text = document.getElementById(id).innerText;
+      
+      // 使用更现代的 Clipboard API
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(showToast);
       } else {
-        document.getElementById('visitor-count').parentElement.style.display='none';
+        // 兼容旧版
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        textArea.style.position = "fixed";
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        try { document.execCommand('copy'); showToast(); } catch (err) {}
+        document.body.removeChild(textArea);
       }
-    },3000);
+    }
+
+    // 显示 Toast 提示
+    function showToast() {
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+
+    // 图片放大
+    function enlarge(src) {
+      document.getElementById('qrImg').src = src;
+      document.getElementById('qrModal').style.display = 'flex';
+    }
   </script>
 </body>
 </html>
